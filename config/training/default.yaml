@@ -1,0 +1,78 @@
+# generic training defaults
+num_epochs: 80
+batch_size: 2
+num_workers: 4 # parallel CPU workers to keep the GPU fed
+pin_memory: true # page‐lock host memory for faster .to(device) copies
+persistent_workers: true
+prefetch_factor: 2 # each worker will buffer 2 batches ahead
+grad_clip_norm: 1.0 # gradient clipping
+
+data_augmentation:
+  enabled: false
+  transforms:
+    - _target_: torchio.transforms.RandomFlip
+      axes: [0, 1, 2]
+      p: 0.3
+    - _target_: torchio.transforms.RandomAffine
+      degrees: [0, 90]
+      p: 0.2
+    - _target_: torchio.transforms.RandomNoise
+      std: 0.1
+      p: 0.2
+    - _target_: medsegnet.data.BackboneAugmentation
+      p: 0.5
+
+loss:
+  name: CombinedLoss
+  params:
+    _target_: utils.losses.${..name}
+    alpha: 0.35
+    ignore_index: 0
+
+# learning_rate: 3e-4
+# optimizer:
+#   name: AdamW
+#   params:
+#     _target_: torch.optim.${..name}
+#     lr: ${...learning_rate}
+#     weight_decay: 1e-4
+
+weight_decay: 3e-5
+learning_rate: 3e-4
+optimizer:
+  name: AdamW
+  params:
+    _target_: torch.optim.${..name}
+    lr: ${...learning_rate}
+    weight_decay: ${...weight_decay}
+
+scheduler:
+  name: ReduceLROnPlateau
+  params:
+    _target_: torch.optim.lr_scheduler.${..name}
+    mode: max # because you're monitoring Dice
+    factor: 0.5 # reduce LR by 50%
+    patience: 10 # wait 10 epochs with no improvement
+    threshold: 0.001 # minimal improvement to qualify
+    cooldown: 0 # no cooldown
+    min_lr: 1e-6 # don't go lower than this
+
+# scheduler:
+#   name: StepLR
+#   params:
+#     _target_: torch.optim.lr_scheduler.${..name}
+#     step_size: 30
+#     gamma: 0.1
+
+# scheduler:
+#   name: PolynomialLR
+#   params:
+#     _target_: torch.optim.lr_scheduler.${..name}
+#     power: 0.9
+#     total_iters: 14720
+
+early_stopper:
+  patience: 35
+  verbose: true
+  delta: 1e-3
+  criterion: "dice_fullres" #By default we monitor the full resolution Dice score.

@@ -1,0 +1,120 @@
+gpu:
+  mode: multi
+  devices:
+  - 0
+  - 1
+  - 2
+  backend: nccl
+  env: env://
+logging:
+  disable_all: false
+  file:
+    level: debug
+    format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  console:
+    level: info
+    format: '[%(levelname)s]: %(message)s'
+    datefmt: '%H:%M:%S'
+  ppmat: false
+use_amp: true
+optimization:
+  mode: deterministic
+wandb:
+  log: true
+  wandb_project: MedicalSegmentation
+  name: test_resume_new_hopefully_resumed
+  group: ${dataset.name}
+  tags:
+  - ${dataset.name}
+seed: 42
+trained_models:
+  base_dir: trained_models
+dataset_subset_size: null
+resume_checkpoint: /home/si-hj/Desktop_Simon_Cleanup/medsegnet/trained_models/rare_unet/Task01_BrainTumour/2025-07-23_00-10-52_test_resume/best_model.pth
+training:
+  num_epochs: 80
+  batch_size: 2
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+  grad_clip_norm: 1.0
+  data_augmentation:
+    enabled: false
+    transforms:
+    - _target_: torchio.transforms.RandomFlip
+      axes:
+      - 0
+      - 1
+      - 2
+      p: 0.3
+    - _target_: torchio.transforms.RandomAffine
+      degrees:
+      - 0
+      - 90
+      p: 0.2
+    - _target_: torchio.transforms.RandomNoise
+      std: 0.1
+      p: 0.2
+    - _target_: medsegnet.data.BackboneAugmentation
+      p: 0.5
+  loss:
+    name: CombinedLoss
+    params:
+      _target_: utils.losses.${..name}
+      alpha: 0.35
+      ignore_index: 0
+  weight_decay: 3.0e-05
+  learning_rate: 0.002
+  optimizer:
+    name: AdamW
+    params:
+      _target_: torch.optim.${..name}
+      lr: ${...learning_rate}
+      weight_decay: ${...weight_decay}
+  scheduler:
+    name: ReduceLROnPlateau
+    params:
+      _target_: torch.optim.lr_scheduler.${..name}
+      mode: max
+      factor: 0.5
+      patience: 10
+      threshold: 0.001
+      cooldown: 0
+      min_lr: 1.0e-06
+  early_stopper:
+    patience: 35
+    verbose: true
+    delta: 0.001
+    criterion: dice_multiscale_avg
+dataset:
+  name: Task01_BrainTumour
+  target_shape:
+  - 256
+  - 256
+  - 128
+  base_path: ../datasets/Task01_BrainTumour/
+  images_subdir: imagesTr
+  labels_subdir: labelsTr
+  num_classes: 4
+  in_channels: 4
+architecture:
+  summary:
+    verbose: 0
+    col_names:
+    - input_size
+    - output_size
+    - num_params
+  path:
+    _target_: models.rare_unet.RAREUNet
+  name: rare_unet
+  pp: rare
+  depth: 5
+  n_filters: 32
+  dropout: 0.2
+  drop_last: true
+  norm_type: instance
+  activation_type: leaky_relu
+  cons_loss_start_epoch: 0
+  num_multiscale_levels: 3

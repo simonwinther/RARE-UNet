@@ -1,0 +1,11 @@
+name: Task04_Hippocampus
+target_shape: [32, 64, 32]
+base_path: "../datasets/Task04_Hippocampus/"
+
+# consider changing to this, but rn no thank you as it breaks everything hjalte has done,
+# so for now i hardcode this in train.py and overwrite it xD oopsie
+#base_path: "../datasets/Task04_Hippocampus_test1/fullres/preprocessed/"
+images_subdir: "imagesTr"
+labels_subdir: "labelsTr"
+num_classes: 3
+in_channels: 1

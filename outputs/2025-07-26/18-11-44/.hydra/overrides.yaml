@@ -1,0 +1,9 @@
+- +dataset=Task01_BrainTumour
+- +architecture=rare_unet
+- training.early_stopper.criterion=dice_multiscale_avg
+- gpu.mode=multi
+- gpu.devices=[0,1,2]
+- training.learning_rate=2e-3
+- wandb.log=true
+- wandb.name=test_resume_new_hopefully_resumed
+- +resume_checkpoint=/home/si-hj/Desktop_Simon_Cleanup/medsegnet/trained_models/rare_unet/Task01_BrainTumour/2025-07-23_00-10-52_test_resume/best_model.pth

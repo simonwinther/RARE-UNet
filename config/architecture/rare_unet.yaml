@@ -1,0 +1,16 @@
+defaults:
+  - unet
+
+path:
+  _target_: models.rare_unet.RAREUNet
+
+#below pp (pretty print) and name are similar maybe better alternative or just remove one of them
+pp: rare
+name: rare_unet
+
+cons_loss_start_epoch: 0
+num_multiscale_levels: 3
+# This is only for the ablation study -> enable only if you want to run the ablation study
+# ablation:
+# num_gate_blocks: 2
+

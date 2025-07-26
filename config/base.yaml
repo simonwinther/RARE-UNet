@@ -1,0 +1,70 @@
+# -- Active dataset selection AND architecture --
+defaults:
+    - _self_
+    # - architecture: ms-unet3d
+    # - dataset: Task04_Hippocampus
+    - training: default
+
+# Hardware settings (applies globally)
+gpu:
+    mode: "single" # Options: "single", "multi"
+    devices: [1, 2, 3] # e.g., [0, 1, 2, 3] for multi-GPU
+    backend: "nccl" # "nccl" for GPU, "gloo" for CPU
+    env: "env://"
+
+# -- Logging settings --
+logging:
+    #placeholders url for format: https://docs.python.org/3/library/logging.html#logrecord-attributes
+    #   critical  # 50: only the most severe (critical) messages
+    #   error     # 40: errors and critical
+    #   warning   # 30: warnings, errors, critical
+    #   info      # 20: info, warnings, errors, critical
+    #   debug     # 10: debug, info, warnings, errors, critical
+    #   notset    # 0: no filtering (all messages pass through)
+    disable_all: false # for performance reasons, disable all logging by default
+    file:
+        level: "debug"
+        format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        datefmt: "%Y-%m-%d %H:%M:%S"
+    console:
+        level: "info"
+        format: "[%(levelname)s]: %(message)s"
+        datefmt: "%H:%M:%S"
+    # This is slow, but nice for debugging and seeing what metrics is logged for wandb.
+    # pretty_print_metrics_as_table
+    ppmat: false
+
+use_amp: true
+
+#TODO only mode is implemented, rest isn't.
+optimization:
+    # one‐of: "deterministic", "benchmark", or "none"
+    mode: deterministic
+    # use_amp: true
+    # use_channels_last: true
+
+# -- Wandb settings --
+wandb:
+    log: false
+    wandb_project: "MedicalSegmentation"
+    #❗❗❗❗ uncomment line below:
+    #name: "${architecture.pp}_${now:%Y-%m-%d_%H-%M-%S}"
+    name: "deleteme"
+    group: "${dataset.name}"
+    tags:
+        - "${dataset.name}"
+
+# -- Seed settings --
+seed: 42 # None for no seed and integer for a numbered seed
+
+# -- Storage settings--
+trained_models:
+    base_dir: "trained_models"
+
+
+# -- Train quicker with only subset of data --
+dataset_subset_size: null
+
+# -- Resume from checkpoint --
+resume_checkpoint: null
+
