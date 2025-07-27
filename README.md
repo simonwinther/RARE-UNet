@@ -15,7 +15,7 @@ Accurate segmentation of brain MRI is critical for clinical assessment but faces
 
 ## Architecture Overview
 
-![Architecture](figures/architecture.pdf)
+![Architecture](figures/architecture.png)
 *Figure 1: RARE-UNet architecture with multi-scale gateway blocks for resolution-adaptive input routing*
 
 ## Sample Results
