@@ -23,22 +23,11 @@ from trainers.rare_trainer import RARETrainer
 # Local Application Imports
 # For all internal modules and packages specific to this project.
 from data.data_manager import DataManager
-from data.datasets import (
-    VALID_TASKS,
-    PreprocessedMedicalDecathlonDataset,
-)
+from data.datasets import PreprocessedDataset
 from utils.checkpoint_handler import CheckpointHandler
 from utils.utils import setup_environment
 from utils.logging import setup_logging
 from utils.wandb_logger import get_wandb_logger
-
-
-EXCLUDED_TASKS = {"Task01_BrainTumour", "Task05_Prostate"}
-DATASET_MAPPING = {
-    task: PreprocessedMedicalDecathlonDataset for task in VALID_TASKS - EXCLUDED_TASKS
-}
-DATASET_MAPPING["Task01_BrainTumour"] = PreprocessedMedicalDecathlonDataset
-DATASET_MAPPING["Task05_Prostate"] = PreprocessedMedicalDecathlonDataset
 
 @hydra.main(config_path="config", config_name="base", version_base=None)
 def main(cfg: DictConfig):
@@ -76,13 +65,6 @@ def main(cfg: DictConfig):
         device = torch.device(f"cuda:{first_gpu}")
 
     is_main = (rank == 0)
-
-    # --- pick datasets ----─────────────────────────────────        
-    task_name = cfg.dataset.name
-    assert task_name in DATASET_MAPPING, f"Unknown dataset: {task_name}"
-    dataset_class = DATASET_MAPPING[task_name]
-
-
     try:
         model = inst(cfg.architecture.path, cfg)        
         optimizer = inst(cfg.training.optimizer.params, params=model.parameters())
@@ -130,12 +112,9 @@ def main(cfg: DictConfig):
             resume_id=wandb_resume_id
         )
 
-
-    
     # ─── create your DataLoaders------------------------------------───────
-    data_manager = DataManager(dataset_class, cfg, seed, tr_split_ratios=(0.80, 0.05))
+    data_manager = DataManager(PreprocessedDataset, cfg, seed, tr_split_ratios=(0.80, 0.05))
     train_dataloader, val_dataloader = data_manager.get_dataloaders(distributed=is_distributed)
-
     
     trainer = RARETrainer(
         cfg,

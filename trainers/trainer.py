@@ -9,6 +9,7 @@ from omegaconf import DictConfig
 from utils.table import print_train_val_table
 
 # PyTorch
+from torch.amp import GradScaler
 from torch.distributed import barrier
 from torch.nn.utils.clip_grad import clip_grad_norm_
 from torch.optim.lr_scheduler import ReduceLROnPlateau
@@ -17,8 +18,7 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 import torch.distributed as dist
 import torch.nn.functional as F
-from torch import is_distributed
-from torch.cuda.amp import autocast, GradScaler
+from torch import autocast, is_distributed
 
 # Project-Specific Modules
 from data.datasets import MedicalDecathlonDataset

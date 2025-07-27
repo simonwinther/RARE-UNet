@@ -15,23 +15,9 @@ import numpy as np
 import torchio as tio
 from pathlib import Path
 
-VALID_TASKS = {
-    "Task01_BrainTumour",
-    "Task02_Heart",
-    "Task03_Liver",
-    "Task04_Hippocampus",
-    "Task05_Prostate",
-    "Task06_Lung",
-    "Task07_Pancreas",
-    "Task08_HepaticVessel",
-    "Task09_Spleen",
-    "Task10_Colon",
-}
-
 logger = logging.getLogger(__name__)
 
-
-class PreprocessedMedicalDecathlonDataset(Dataset):
+class PreprocessedDataset(Dataset):
     """
     Loads .pt volumes & masks saved by preprocess_data.py.
     Accepts optional image_files/mask_files lists for compatibility
@@ -78,7 +64,7 @@ class PreprocessedMedicalDecathlonDataset(Dataset):
         return img, msk
 
 
-class MedicalDecathlonDataset(Dataset):
+class NotPreprocessedDataset(Dataset):
     def __init__(
         self,
         cfg: DictConfig,
