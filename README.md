@@ -15,7 +15,7 @@ Accurate segmentation of brain MRI is critical for clinical assessment but faces
 
 ## Architecture Overview
 
-![Architecture](figures/rare_unet_architecture.png)
+![Architecture](figures/architecture.png)
 *Figure 1: RARE-UNet architecture with multi-scale gateway blocks for resolution-adaptive input routing*
 
 RARE-UNet extends the standard 3D UNet with a resolution-adaptive design, incorporating multi-scale gateway blocks (MSBs) that route inputs to appropriate encoder depths based on their resolution (e.g., full, 1/2, 1/4, 1/8 scales). This approach preserves image fidelity, avoids resampling artifacts, and reduces computational costs for low-resolution inputs. The architecture maintains a shared bottleneck and uses resolution-specific segmentation heads, ensuring robust performance across diverse imaging conditions.
