@@ -33,9 +33,7 @@ class PreprocessedDataset(Dataset):
     ):
         super().__init__()
         #HARDCODED: 
-        #base       = Path(cfg.dataset.base_path)
-        #this is the ugliest hack ever, but it works for now for submitting paper in time.
-        base        = Path(f"../datasets/{cfg.dataset.name}_test1/fullres/preprocessed/")
+        base       = Path(cfg.dataset.base_path)
         
         images_dir = base / cfg.dataset.images_subdir
         masks_dir  = base / cfg.dataset.labels_subdir
@@ -94,8 +92,11 @@ class NotPreprocessedDataset(Dataset):
             if masks_path is not None
             else os.path.join(base, cfg.dataset.labels_subdir)
         )
-        ensure_pexists(self.images_path, FileNotFoundError)
-        ensure_pexists(self.masks_path, FileNotFoundError)
+        if not os.path.exists(self.images_path):
+            raise FileNotFoundError(f"Images path does not exist: {self.images_path}")
+        
+        if not os.path.exists(self.masks_path):
+            raise FileNotFoundError(f"Labels path does not exist: {self.masks_path}")
 
         if image_files is None or mask_files is None:
             self.image_files = sorted(os.listdir(self.images_path))
@@ -188,7 +189,7 @@ class NotPreprocessedDataset(Dataset):
         return image_out, mask_out
 
 
-class ModalitiesDataset(MedicalDecathlonDataset):
+class ModalitiesDataset(NotPreprocessedDataset):
     def __getitem__(self, idx):
         """
         Load and preprocess a multi-modal image and its mask.

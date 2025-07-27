@@ -3,7 +3,7 @@ from omegaconf import DictConfig
 import torch
 from torch.utils.data import DataLoader, random_split
 import os
-from data.datasets import PreprocessedMedicalDecathlonDataset
+from data.datasets import PreprocessedDataset
 from typing import Tuple, Type
 import numpy as np
 import random
@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class DataManager:
     def __init__(
         self,
-        dataset_class: Type[PreprocessedMedicalDecathlonDataset],
+        dataset_class: Type[PreprocessedDataset],
         cfg: DictConfig,
         seed: int,
         tr_split_ratios: Tuple[float, float] = (0.80, 0.05),
@@ -31,8 +31,8 @@ class DataManager:
 
     def _create_datasets(self):
         #HARDCODED: Again, hardcoded path for now, will be fixed later, so we can submit the paper in time.
-        #base = self.cfg.dataset.base_path
-        base = f"../datasets/{self.cfg.dataset.name}_test1/fullres/preprocessed/"
+        base = self.cfg.dataset.base_path
+        #base = f"../datasets/{self.cfg.dataset.name}_test1/fullres/preprocessed/"
 
         images_path = f"{base}{self.cfg.dataset.images_subdir}"
         masks_path  = f"{base}{self.cfg.dataset.labels_subdir}"

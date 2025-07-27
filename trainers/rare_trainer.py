@@ -12,51 +12,22 @@ import torch.nn as nn
 import numpy as np
 from torch.nn.parallel import DistributedDataParallel
 
-
-# @register_trainer("rare_unet")
 class RARETrainer(BaseTrainer):
     def __init__(self, cfg, model, *args, **kwargs):
         if isinstance(model, DistributedDataParallel):
             net = model.module
         else:
             net = model
-        # Note: The consistency loss start epoch feature is not recommended and should generally be set to 0.
-        # 
-        # Rationale: Consistency loss should be applied from the beginning of training for optimal results.
-        # If consistency loss is delayed (cons_loss_start_epoch > 0), the Multiscale Blocks (MSB) initially 
-        # produce noisy, unregularized segmentation maps during early training. These noisy features then 
-        # propagate through the rest of the architecture and are fed to the multiscale heads (ms_heads).
-        # 
-        # This creates a suboptimal training dynamic where:
-        # 1. Early training produces poor multiscale feature representations
-        # 2. The ms_heads learn to work with these noisy features
-        # 3. When consistency loss is finally applied, the model must adapt to better features
-        # 
-        # In contrast, applying consistency loss from epoch 0 ensures clean, consistent multiscale 
-        # features from the start, leading to more stable and effective training, or so I believe. You 
-        # can try and experiment with this, but I did not get good results with it.
         self.cons_loss_start_epoch = cfg.architecture.get("cons_loss_start_epoch", 0)
-
-
-        # Note: n_ms_levels is the number of multiscale levels in the architecture.
-        # It is used to determine the number of consistency loss pairs and the weights for each scale
-        # in the architecture.
-        # It is also used to determine the number of multiscale heads (ms_heads)
-        # and the number of multiscale blocks (ms_blocks) in the architecture.
         n_levels = net.n_ms_levels
         assert isinstance(n_levels, int), "n_ms_levels must be int"
         assert n_levels > 0, "n_ms_levels must be greater than 0"
         assert n_levels < cfg.architecture.depth, "n_ms_levels must be less than or equal to depth"
         self.n_ms_levels = n_levels
-        
-        # We initialize loss weights with uniform distribution across all scales.
-        # Segmentation weights: Equal contribution (1/depth) for each scale in the architecture
-        # Consistency weights: Equal contribution (1/n_ms_levels) for each multiscale level.
         self.weights = {
             'segmentation': [1 / cfg.architecture.depth] * cfg.architecture.depth,
             'consistency': [1 / (n_levels)] * n_levels
         }
-
         super().__init__(cfg, model, *args, **kwargs)
         
     def _compute_loss(self, outputs: torch.Tensor, masks: torch.Tensor) -> torch.Tensor:
@@ -129,7 +100,6 @@ class RARETrainer(BaseTrainer):
             for i in range(1, self.n_ms_levels + 1):
                 keys.append(f"{metric}_scale{i}")
                 cls_keys.append(f"{metric}_per_class_scale{i}")
-            ensure_has_keys(combined, keys + cls_keys, msg="Missing metric for MS")
 
             vals = [combined[k] for k in keys]
             combined[f"{metric}_multiscale_avg"] = sum(vals) / len(vals)

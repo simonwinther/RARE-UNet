@@ -48,20 +48,25 @@ class RAREPredictor:
         """
         try:
             print("Instantiating model using configuration...")
-            model = instantiate(self.cfg.architecture, cfg=self.cfg, mode="inference")
+            model = instantiate(self.cfg.architecture.path, self.cfg, mode="inference")
 
             print(f"Loading weights from {model_path}...")
-            # torch.load works directly with Path objects
-            model.load_state_dict(torch.load(model_path, map_location=self.device))
-            
+            checkpoint = torch.load(model_path, map_location=self.device)
+            model.load_state_dict(checkpoint['model_state_dict'])
             model.to(self.device)
             model.eval()
-            
             print("Model loaded successfully.")
             return model
         except Exception as e:
+            # It's good practice to check if the key exists for more robust error handling
+            if isinstance(e, KeyError):
+                raise RuntimeError(
+                    f"Error loading state_dict. The key 'model_state_dict' was not found in {model_path}. "
+                    "The saved checkpoint may have a different structure."
+                )
             raise RuntimeError(f"Error loading the model: {e}")
-
+        
+    
     def _preprocess(self, image: np.ndarray) -> np.ndarray:
         """Preprocesses the image using settings from the config."""
         target_shape = self.cfg.dataset.target_shape
@@ -81,16 +86,30 @@ class RAREPredictor:
         resized_mask = resize(mask, original_shape, order=0, preserve_range=True, anti_aliasing=False).astype(np.uint8)
         return resized_mask
 
+    def _load_image(self, image_path: Path) -> np.ndarray:
+        """
+        Loads a medical image, handling both NIfTI and PyTorch tensor formats.
+        """
+        print(f"Loading image from: {image_path}")
+        if str(image_path).endswith(('.pt', '.pth')):
+            print("Detected PyTorch tensor file. Loading with torch.load().")
+            img_data = torch.load(image_path, map_location='cpu').squeeze().numpy()
+            return img_data
+        elif str(image_path).endswith(('.nii', '.nii.gz')):
+            print("Detected NIfTI file. Loading with nibabel.")
+            img_nifti = nib.load(image_path)
+            img_data = img_nifti.get_fdata()
+            return img_data
+        else:
+            raise ValueError(f"Unsupported file type: '{image_path.suffix}'. Please use .nii, .nii.gz, or .pt")
+
     def predict(self, image_path: str) -> np.ndarray:
         """
         Runs inference on a 3D medical image.
         """
         img_file = Path(image_path)
-        print(f"Loading image: {img_file}")
-        # nibabel works directly with Path objects
-        img_nifti = nib.load(img_file)
-        img_data = img_nifti.get_fdata()
-        original_shape = img_data.shape
+        img_data = self._load_image(img_file)
+        original_shape = img_data.shape 
 
         print("Preprocessing image...")
         preprocessed_img = self._preprocess(img_data)

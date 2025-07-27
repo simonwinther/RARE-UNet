@@ -54,9 +54,9 @@ class RAREUNet(UNet3D):
                 MSBGate(
                     self.in_channels,
                     out_channels,
+                    n_gate_blocks=self.n_gate_blocks,
                     norm_type=self.norm_type, 
                     activation_type=self.activation_type,
-                    n_gate_blocks=self.n_gate_blocks
                 )
             )
             in_channels = out_channels
