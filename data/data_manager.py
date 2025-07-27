@@ -30,9 +30,7 @@ class DataManager:
         self.train_dataset, self.val_dataset = self._create_datasets()
 
     def _create_datasets(self):
-        #HARDCODED: Again, hardcoded path for now, will be fixed later, so we can submit the paper in time.
         base = self.cfg.dataset.base_path
-        #base = f"../datasets/{self.cfg.dataset.name}_test1/fullres/preprocessed/"
 
         images_path = f"{base}{self.cfg.dataset.images_subdir}"
         masks_path  = f"{base}{self.cfg.dataset.labels_subdir}"

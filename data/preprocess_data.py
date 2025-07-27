@@ -42,7 +42,7 @@ def main(
 
     # Define the heavy preprocessing pipeline
     preprocess = tio.Compose([
-        tio.ToCanonical(),  # ensure RAS orientation
+        tio.ToCanonical(), 
         tio.Resample(
             target_spacing,
             image_interpolation="linear",
