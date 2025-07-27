@@ -1,4 +1,4 @@
-# RARE-UNet: Resolution-Adaptive UNet for Brain MRI Segmentation
+# RARE-UNet: Resolution-Aligned Routing Entry for Adaptive Medical Image Segmentation
 
 [![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
 [![LNCS 2025](https://img.shields.io/badge/LNCS-2025-blue)](https://www.springer.com/series/558)
@@ -15,7 +15,7 @@ Accurate segmentation of brain MRI is critical for clinical assessment but faces
 
 ## Architecture Overview
 
-![Architecture](figures/rare_unet_architecture.png)
+![Architecture](figures/architecture.pdf)
 *Figure 1: RARE-UNet architecture with multi-scale gateway blocks for resolution-adaptive input routing*
 
 ## Sample Results
