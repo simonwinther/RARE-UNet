@@ -79,18 +79,39 @@ dice_val = dice_coefficient(pred_tensor, ground_truth_tensor, num_classes=3, ign
 print(f"Dice Coefficient: {dice_val.item()}")
 ```
 
+
 ### Training
 
-To train the model, use the provided training scripts. Example for distributed training:
+To train the model, use the provided training script with appropriate command-line arguments.
+
+For single GPU training:
 
 ```bash
-bash train_ddp.sh
+python train.py \
+  +dataset=$DATASET \
+  +architecture=$ARCH \
+  training.early_stopper.criterion=dice_multiscale_avg \
+  gpu.mode=single \
+  gpu.devices="[0]" \
+  training.learning_rate=2e-3 \
+  wandb.log=true
 ```
 
-For local training:
+For distributed training on multiple GPUs:
 
 ```bash
-bash train_local.sh
+python -m torch.distributed.run \
+  --nproc_per_node=3 \
+  train.py \
+  +dataset=$DATASET \
+  +architecture=$ARCH \
+  training.early_stopper.criterion=dice_multiscale_avg \
+  gpu.mode=multi \
+  gpu.devices="[0,1,2]" \
+  training.learning_rate=2e-3 \
+  wandb.log=true \
+  wandb.name=test_resume_new_hopefully_resumed \
+  +resume_checkpoint=/home/si-hj/Desktop_Simon_Cleanup/medsegnet/trained_models/rare_unet/Task01_BrainTumour/2025-07-23_00-10-52_test_resume/best_model.pth
 ```
 
 Configuration files in `config/` allow customization of architecture, dataset, and training settings.

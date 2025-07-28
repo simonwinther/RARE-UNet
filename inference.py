@@ -58,7 +58,6 @@ class RAREPredictor:
             print("Model loaded successfully.")
             return model
         except Exception as e:
-            # It's good practice to check if the key exists for more robust error handling
             if isinstance(e, KeyError):
                 raise RuntimeError(
                     f"Error loading state_dict. The key 'model_state_dict' was not found in {model_path}. "
@@ -111,6 +110,7 @@ class RAREPredictor:
         img_data = self._load_image(img_file)
         original_shape = img_data.shape 
 
+        # Måske tilføj if "preprocess er enabled, så kan vi bruge samme som i preprocess_data.py til at preprocess ellers ikke nødvendigt"
         print("Preprocessing image...")
         preprocessed_img = self._preprocess(img_data)
 
