@@ -29,8 +29,12 @@ The Multi-Scale Gateway Blocks (MSBs) are the core innovation enabling resolutio
 
 ## Sample Results
 
-![Sample Segmentation](figures/sample_segmentation.png)
-*Figure 2: Qualitative comparison of hippocampus and brain tumor segmentation results across resolutions*
+![Brain Tumour Segmentation](figures/brain_tumour_multiscale_view.png)
+*Figure 3: Qualitative comparison of brain tumor segmentation results across resolutions*
+
+![HippoCampus Segmentation](figures/hippocampus_multiscale_view.png)
+*Figure 4: Qualitative comparison of hippocampus segmentation results across resolutions*
+
 
 ## Key Features
 
@@ -180,9 +184,9 @@ This work builds upon these foundations to advance resolution-adaptive segmentat
 
 If you use this code in your research, please cite our paper:
 ```bibtex
-@article{simon2025rare,
+@article{simonhjalteghazi2025rare,
   title={RARE-UNet: Resolution-Adaptive UNet for Brain MRI Segmentation},
-  author={Simon, Hjalte and others},
+  author={Simon, Hjalte and Mostafa},
   journal={Lecture Notes in Computer Science (LNCS)},
   year={2025}
 }
