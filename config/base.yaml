@@ -1,7 +1,7 @@
 # -- Active dataset selection AND architecture --
 defaults:
     - _self_
-    # - architecture: ms-unet3d
+    - architecture: rare_unet
     # - dataset: Task04_Hippocampus
     - training: default
 
@@ -61,10 +61,8 @@ seed: 42 # None for no seed and integer for a numbered seed
 trained_models:
     base_dir: "trained_models"
 
-
 # -- Train quicker with only subset of data --
 dataset_subset_size: null
 
 # -- Resume from checkpoint --
 resume_checkpoint: null
-
