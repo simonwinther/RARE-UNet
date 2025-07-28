@@ -112,7 +112,17 @@ python -m torch.distributed.run \
   +resume_checkpoint=trained_models/rare_unet/BrainTumour/2025-07-23_00-10-52/best_model.pth
 ```
 
-Configuration files in `config/` allow customization of architecture, dataset, and training settings.
+### Configuration with Hydra
+
+All configurations for RARE-UNet are managed using [Hydra](https://hydra.cc/), a flexible configuration framework that organizes settings in YAML files located in the `config/` directory. This allows for modular and reproducible configuration of datasets, model architectures, and training parameters. The `config/` directory is structured as follows:
+
+- **`architecture/`**: Contains YAML files defining model architectures (e.g., `rare_unet.yaml` for RARE-UNet and `unet.yaml` for baseline UNet).
+- **`dataset/`**: Includes dataset-specific configurations (e.g., `Task01_BrainTumour.yaml` and `Task04_Hippocampus.yaml`).
+- **`training/`**: Holds training-specific settings (e.g., `default.yaml`, `Task01_BrainTumour.yaml`, and `Task04_Hippocampus.yaml`).
+- **`base.yaml`**: Provides base configuration settings inherited by other configs.
+
+To customize experiments, modify the relevant YAML files in `config/` or override specific parameters via command-line arguments (as shown in the training commands above). Hydra's hierarchical configuration system allows seamless integration of dataset, architecture, and training settings, enabling flexible experimentation while maintaining reproducibility.
+
 
 ## Project Structure
 
