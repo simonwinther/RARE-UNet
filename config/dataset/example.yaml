@@ -1,6 +1,6 @@
 name: Hippocampus
 target_shape: [32, 64, 32]
-base_path: "../HC_PREPROC/"
+base_path: "../HC_PREPROCESSED/"
 images_subdir: "images"
 labels_subdir: "masks"
 num_classes: 3

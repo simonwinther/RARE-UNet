@@ -1,0 +1,10 @@
+# training/example.yaml
+defaults:
+  - default
+# This configuration file serves as an example for defining training-specific overrides
+# for a dataset in the RARE-UNet project. To use this configuration, specify
+# `training=example` when running the training script to override the default
+# training hyperparameters. Refer to the project README for detailed instructions
+# on customizing configurations with Hydra. You can also directly override defaults
+# hyperparameters in the command line, such as:
+# `python train.py training.num_epochs=100 training.batch_size=4`

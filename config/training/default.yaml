@@ -29,14 +29,6 @@ loss:
     alpha: 0.35
     ignore_index: 0
 
-# learning_rate: 3e-4
-# optimizer:
-#   name: AdamW
-#   params:
-#     _target_: torch.optim.${..name}
-#     lr: ${...learning_rate}
-#     weight_decay: 1e-4
-
 weight_decay: 3e-5
 learning_rate: 3e-4
 optimizer:
@@ -50,13 +42,14 @@ scheduler:
   name: ReduceLROnPlateau
   params:
     _target_: torch.optim.lr_scheduler.${..name}
-    mode: max # because you're monitoring Dice
+    mode: max # because we're monitoring Dice
     factor: 0.5 # reduce LR by 50%
     patience: 10 # wait 10 epochs with no improvement
     threshold: 0.001 # minimal improvement to qualify
     cooldown: 0 # no cooldown
     min_lr: 1e-6 # don't go lower than this
 
+# Other scheduler options (uncomment to use):
 # scheduler:
 #   name: StepLR
 #   params:
