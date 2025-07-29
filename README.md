@@ -91,6 +91,7 @@ python train.py \
   gpu.mode=single \
   gpu.devices="[0]" \
   dataset=$DATASET_YAML \
+  # Hydra: Command-line Overrides
   training.learning_rate=2e-3 \
   training.early_stopper.criterion=dice_multiscale_avg \
   wandb.log=true
@@ -102,10 +103,11 @@ For distributed training on multiple GPUs:
 python -m torch.distributed.run \
   --nproc_per_node=3 \
   train.py \
-  dataset=$DATASET_YAML \
-  training.early_stopper.criterion=dice_multiscale_avg \
   gpu.mode=multi \
   gpu.devices="[0,1,2]" \
+  dataset=$DATASET_YAML \
+  # Hydra: Command-line Overrides
+  training.early_stopper.criterion=dice_multiscale_avg \
   training.learning_rate=2e-3 \
   wandb.log=true \
   wandb.name=training_resumed \
