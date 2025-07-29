@@ -213,11 +213,14 @@ This work builds upon these foundations to advance resolution-adaptive segmentat
 
 If you use this code in your research, please cite our paper:
 ```bibtex
-@article{simonhjalteghazi2025rare,
-  title={RARE-UNet: Resolution-Adaptive UNet for Brain MRI Segmentation},
-  author={Simon, Hjalte and Mostafa},
-  journal={Lecture Notes in Computer Science (LNCS)},
-  year={2025}
+@misc{albertsen2025rareunetresolutionalignedroutingentry,
+      title={RARE-UNet: Resolution-Aligned Routing Entry for Adaptive Medical Image Segmentation}, 
+      author={Simon Winther Albertsen and Hjalte Svaneborg Bjørnstrup and Mostafa Mehdipour Ghazi},
+      year={2025},
+      eprint={2507.15524},
+      archivePrefix={arXiv},
+      primaryClass={eess.IV},
+      url={https://arxiv.org/abs/2507.15524}, 
 }
 ```
 
