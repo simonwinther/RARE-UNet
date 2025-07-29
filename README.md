@@ -1,11 +1,11 @@
 # RARE-UNet: Resolution-Aligned Routing Entry for Adaptive Medical Image Segmentation
 
-[![arXiv](https://img.shields.io/badge/arXiv-XXXX.XXXXX-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+[![arXiv](https://img.shields.io/badge/arXiv-2507.15524-b31b1b.svg)](https://arxiv.org/abs/2507.15524)
 [![LNCS 2025](https://img.shields.io/badge/LNCS-2025-blue)](https://www.springer.com/series/558)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-orange)](https://pytorch.org/)
 
-📄 This paper has been accepted by LNCS 2025 — (https://arxiv.org/abs/XXXX.XXXXX)
+📄 This paper has been accepted by LNCS 2025 — (https://arxiv.org/abs/2507.15524)
 
 ## Abstract
 
