@@ -1,17 +1,17 @@
 # RARE-UNet: Resolution-Aligned Routing Entry for Adaptive Medical Image Segmentation
 
 [![arXiv](https://img.shields.io/badge/arXiv-2507.15524-b31b1b.svg)](https://arxiv.org/abs/2507.15524)
-[![LNCS 2025](https://img.shields.io/badge/LNCS-2025-blue)](https://www.springer.com/series/558)
+[![ 2025](https://img.shields.io/badge/LNCS-2025-blue)](https://www.springer.com/series/558)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.9+-orange)](https://pytorch.org/)
 
-📄 This paper has been accepted by LNCS 2025 — (https://arxiv.org/abs/2507.15524)
+📄 This paper has been accepted by MICCAI Workshop on Efficient Medical AI — (https://arxiv.org/abs/2507.15524)
 
 ## Abstract
 
 Accurate segmentation is crucial for clinical applications, but existing models often assume fixed, high-resolution inputs and degrade significantly when faced with lower-resolution data in real-world scenarios. To address this limitation, we propose RARE-UNet, a resolution-aware multi-scale segmentation architecture that dynamically adapts its inference path to the spatial resolution of the input. Central to our design are multi-scale blocks integrated at multiple encoder depths, a resolution-aware routing mechanism, and consistency-driven training that aligns multi-resolution features with full-resolution representations. We evaluate RARE-UNet on two benchmark brain imaging tasks for hippocampus and tumor segmentation. Compared to standard UNet, its multi-resolution augmented variant, and nnUNet, our model achieves the highest average Dice scores of 0.84 and 0.65 across resolution, while maintaining consistent performance and significantly reduced inference time at lower resolutions. These results highlight the effectiveness and scalability of our architecture in achieving resolution-robust segmentation.
 
-📢 Accepted at LNCS 2025
+📢 Accepted at MICCAI Workshop on Efficient Medical AI 2025
 
 ## Architecture Overview
 
@@ -88,11 +88,11 @@ For single GPU training:
 
 ```bash
 python train.py \
-  +dataset=$DATASET_YAML \
-  training.early_stopper.criterion=dice_multiscale_avg \
   gpu.mode=single \
   gpu.devices="[0]" \
+  dataset=$DATASET_YAML \
   training.learning_rate=2e-3 \
+  training.early_stopper.criterion=dice_multiscale_avg \
   wandb.log=true
 ```
 
@@ -102,7 +102,7 @@ For distributed training on multiple GPUs:
 python -m torch.distributed.run \
   --nproc_per_node=3 \
   train.py \
-  +dataset=$DATASET_YAML \
+  dataset=$DATASET_YAML \
   training.early_stopper.criterion=dice_multiscale_avg \
   gpu.mode=multi \
   gpu.devices="[0,1,2]" \
