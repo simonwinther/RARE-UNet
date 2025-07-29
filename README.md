@@ -129,45 +129,41 @@ To customize experiments, modify the relevant YAML files in `config/` or overrid
 ```
 RARE-UNet/
 ├── config/                     # Configuration files
-│   ├── architecture/           # Model architecture configurations
+│   ├── architecture/          # Model architecture configurations
 │   │   ├── rare_unet.yaml     # RARE-UNet architecture settings
 │   │   └── unet.yaml          # Baseline UNet settings
 │   ├── dataset/               # Dataset configurations
 │   │   ├── example.yaml       # Example dataset config
-│   │   └── Task01_BrainTumour.yaml  # Brain tumor dataset config
 │   ├── training/              # Training configurations
 │   │   ├── default.yaml       # Default training settings
-│   │   ├── Task01_BrainTumour.yaml  # Brain tumor training config
-│   │   └── Task04_Hippocampus.yaml  # Hippocampus training config
+│   │   └── example.yaml       # Hippocampus training config
 │   └── base.yaml              # Base configuration
 ├── data/                      # Data handling and preprocessing
-│   ├── data_manager.py       # Dataset management utilities
-│   ├── datasets.py           # Dataset loading and processing
-│   └── preprocess_data.py    # Preprocessing utilities to convert to .nii.pt
+│   ├── data_manager.py        # Dataset management utilities
+│   ├── datasets.py            # Dataset loading and processing
+│   └── preprocess_data.py     # Preprocessing utilities to convert to .nii.pt
 ├── models/                    # Model implementations
-│   ├── rare_unet.py          # RARE-UNet model with multi-scale blocks
-│   └── unet.py               # Baseline 3D UNet model
+│   ├── rare_unet.py           # RARE-UNet model with multi-scale blocks
+│   └── unet.py                # Baseline 3D UNet model
 ├── trainers/                  # Training utilities
-│   ├── early_stopping.py     # Early stopping implementation
-│   ├── rare_trainer.py       # RARE-UNet training logic
-│   └── trainer.py            # General training utilities
+│   ├── early_stopping.py      # Early stopping implementation
+│   ├── rare_trainer.py        # RARE-UNet training logic
+│   └── trainer.py             # General training utilities
 ├── utils/                     # Utility functions
-│   ├── checkpoint_handler.py # Model checkpoint management
-│   ├── logging.py            # Logging utilities
-│   ├── losses.py             # Custom loss functions (MSE consistency + Dice)
-│   ├── metric_collecter.py   # Metric collection utilities
-│   ├── metrics.py            # Evaluation metrics
-│   ├── table.py              # Result table generation
-│   ├── utils.py              # General utilities
-│   ├── wandb_logger.py       # Weights & Biases logging
-│   └── weight_strategies.py  # Weight initialization strategies
-├── example.py                # Example usage script
-├── inference.py              # Inference pipeline
-├── train.py                  # Main training script
-├── train_ddp.sh              # Distributed training script
-├── train_local.sh            # Local training script
-├── README.md                 # Project documentation
-└── setup.py                  # Package installation
+│   ├── checkpoint_handler.py  # Model checkpoint management
+│   ├── logging.py             # Logging utilities
+│   ├── losses.py              # Custom loss functions (MSE consistency + Dice)
+│   ├── metric_collecter.py    # Metric collection utilities
+│   ├── metrics.py             # Evaluation metrics
+│   ├── table.py               # Result table generation
+│   ├── utils.py               # General utilities
+│   ├── wandb_logger.py        # Weights & Biases logging
+│   └── weight_strategies.py   # Weight initialization strategies
+├── example.py                 # Example usage script
+├── inference.py               # Inference pipeline
+├── train.py                   # Main training script
+├── README.md                  # Project documentation
+└── setup.py                   # Package installation
 ```
 
 ## Data Structure

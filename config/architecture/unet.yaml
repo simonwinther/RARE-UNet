@@ -5,8 +5,8 @@ summary:
 path:
   _target_: models.unet.UNet3D
 
-name: bb
 pp: unet
+name: bb
 
 depth: 5
 n_filters: 32
